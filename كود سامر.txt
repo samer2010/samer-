@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>محول العملات العالمي</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --text: white;
+      --header: #1520a6;
+      --box: #1c1c2e;
+      --highlight: #4a6aff;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Tahoma', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      background-color: var(--header);
+      padding: 25px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+      padding: 0;
+      margin: 0;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .mode-button {
+      background-color: #1f1f2e;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    main {
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 32px;
+      color: var(--highlight);
+    }
+
+    .converter {
+      background-color: var(--box);
+      padding: 40px;
+      border-radius: 25px;
+      max-width: 800px;
+      margin: 40px auto;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+
+    label {
+      display: block;
+      text-align: right;
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    input[type="number"], select {
+      width: 100%;
+      padding: 18px;
+      font-size: 18px;
+      border-radius: 10px;
+      border: none;
+      margin-bottom: 20px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    input[type="number"]:focus, select:focus {
+      outline: none;
+      box-shadow: 0 0 8px 2px rgba(74, 106, 255, 0.7);
+    }
+
+    .selects {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .selects > div {
+      flex: 1;
+    }
+
+    .switch-btn {
+      font-size: 24px;
+      padding: 12px 20px;
+      background-color: var(--highlight);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.3s ease;
+    }
+
+    .switch-btn:hover {
+      box-shadow: 0 6px 15px rgba(74, 106, 255, 0.4);
+      transform: rotate(90deg) translateY(-3px);
+    }
+
+    #result {
+      font-size: 22px;
+      margin: 25px 0;
+      color: #00f7ff;
+    }
+
+    .convert-btn {
+      background-color: var(--highlight);
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 18px;
+      font-size: 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .convert-btn:hover {
+      background-color: #008cff;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 140, 255, 0.4);
+    }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin: 60px 0;
+    }
+
+    .features div {
+      background: #2a2a40;
+      padding: 30px 25px;
+      border-radius: 20px;
+      font-size: 18px;
+      min-width: 280px;
+      max-width: 320px;
+      text-align: right;
+      line-height: 1.6;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .features div:hover, .features div:active {
+      transform: translateY(-8px);
+    }
+
+    .features h3 {
+      margin-bottom: 10px;
+      font-size: 20px;
+      color: #4a6aff;
+    }
+
+    .features p {
+      margin: 0;
+    }
+
+    .currencies {
+      max-width: 1000px;
+      margin: 0 auto 60px;
+    }
+
+    .currency-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 20px;
+    }
+
+    .currency-grid span {
+      background: #2a2a40;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 18px;
+      display: block;
+      cursor: pointer;
+      user-select: none;
+      touch-action: manipulation;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+
+    .currency-grid span:hover, .currency-grid span:active {
+      transform: translateY(-12px) scale(1.1);
+      box-shadow: 0 10px 30px rgba(74, 106, 255, 0.6);
+      background-color: rgba(74, 106, 255, 0.15);
+      color: #4a6aff;
+    }
+
+    footer {
+      background-color: var(--header);
+      padding: 25px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .info-section {
+      background-color: var(--box);
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: 50px auto;
+      border-radius: 15px;
+      line-height: 1.8;
+      text-align: right;
+    }
+
+    .info-section h2 {
+      color: var(--highlight);
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <button class="mode-button" onclick="toggleMode()">🌙 الوضع الليلي</button>
+    <nav>
+      <ul>
+        <li><a href="#">الرئيسية</a></li>
+        <li><a href="#about">من نحن</a></li>
+        <li><a href="#privacy">سياسة الخصوصية</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>محول العملات العالمي</h1>
+    <div class="converter">
+      <label for="amount">المبلغ</label>
+      <input type="number" id="amount" value="1" />
+
+      <div class="selects">
+        <div>
+          <label for="from">من</label>
+          <select id="from"></select>
+        </div>
+
+        <button class="switch-btn" onclick="swap()">⇆</button>
+
+        <div>
+          <label for="to">إلى</label>
+          <select id="to"></select>
+        </div>
+      </div>
+
+      <p id="result"></p>
+      <button class="convert-btn" onclick="convert()">تحويل 🧮</button>
+    </div>
+
+    <section class="features">
+      <div>
+        <h3>⚡ تحويل فوري</h3>
+        <p>احصل على أسعار صرف العملات فورياً مع تحديثات لحظية للأسعار.</p>
+      </div>
+      <div>
+        <h3>🌍 180+ عملة</h3>
+        <p>يدعم جميع عملات العالم الرئيسية والثانوية مع مخططات تفاعلية.</p>
+      </div>
+      <div>
+        <h3>📈 مخططات تفاعلية</h3>
+        <p>تابع تغيرات أسعار العملات عبر المخططات التفاعلية والبيانية.</p>
+      </div>
+    </section>
+
+    <section class="currencies">
+      <h2>العملات الشائعة</h2>
+      <div class="currency-grid" id="popularCurrencies"></div>
+    </section>
+
+    <div class="info-section" id="about">
+      <h2>من نحن</h2>
+      <p>
+        نحن فريق مهتم بتقديم أدوات مفيدة وسريعة عبر الإنترنت. هدفنا هو توفير آلة حاسبة دقيقة ومحدثة لتحويل العملات بين مختلف الدول بكل سهولة وسرعة، مع تصميم بسيط ومريح للمستخدم.
+      </p>
+    </div>
+
+    <div class="info-section" id="privacy">
+      <h2>سياسة الخصوصية</h2>
+      <p>
+        نحن نحترم خصوصيتك بشكل كامل. لا نقوم بجمع أي معلومات شخصية من المستخدمين عند استخدام هذه الأداة. جميع العمليات تتم على جهازك فقط، ولا يتم تخزين أي بيانات أو مشاركتها مع أي طرف ثالث. باستخدامك لهذا الموقع، فإنك توافق على سياسة الخصوصية هذه.
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    <a href="#privacy">سياسة الخصوصية</a> |
+    <a href="#about">من نحن</a>
+  </footer>
+
+  <script>
+    const currencyList = ["USD", "EUR", "EGP", "SAR", "AED", "JOD", "KWD", "QAR", "OMR", "GBP", "JPY", "CNY", "TRY", "CAD", "AUD", "CHF", "INR", "RUB", "SEK", "NOK"];
+
+    const rates = {
+      USD: { EGP: 30.9, EUR: 0.93, SAR: 3.75, AED: 3.67, JOD: 0.71, KWD: 0.31, QAR: 3.64, OMR: 0.38, GBP: 0.79, JPY: 156.7 },
+      EGP: { USD: 1 / 30.9, EUR: 0.03, SAR: 0.12, AED: 0.12 },
+      EUR: { USD: 1.07, EGP: 33.2, SAR: 4.01 },
+      SAR: { USD: 0.27, EGP: 8.25 },
+      AED: { USD: 0.27, EGP: 8.4 },
+      JOD: { USD: 1.41 },
+      GBP: { USD: 1.27 },
+      JPY: { USD: 0.0064 },
+    };
+
+    const fromSelect = document.getElementById("from");
+    const toSelect = document.getElementById("to");
+    const amountInput = document.getElementById("amount");
+    const resultDisplay = document.getElementById("result");
+    const popularCurrenciesDiv = document.getElementById("popularCurrencies");
+
+    // تحميل العملات في القوائم
+    function loadCurrencies() {
+      currencyList.forEach(curr => {
+        const optionFrom = document.createElement("option");
+        optionFrom.value = curr;
+        optionFrom.textContent = curr;
+        fromSelect.appendChild(optionFrom);
+
+        const optionTo = document.createElement("option");
+        optionTo.value = curr;
+        optionTo.textContent = curr;
+        toSelect.appendChild(optionTo);
+      });
+      fromSelect.value = "USD";
+      toSelect.value = "EGP";
+    }
+
+    // محول العملات
+    function convert() {
+      const from = fromSelect.value;
+      const to = toSelect.value;
+      let amount = parseFloat(amountInput.value);
+      if (isNaN(amount) || amount <= 0) {
+        resultDisplay.textContent = "من فضلك أدخل مبلغًا صحيحًا.";
+        return;
+      }
+      if (from === to) {
+        resultDisplay.textContent = amount + " " + from;
+        return;
+      }
+      let rate = getRate(from, to);
+      if (!rate) {
+        resultDisplay.textContent = "لا توجد بيانات سعر للصرف بين هاتين العملتين.";
+        return;
+      }
+      let converted = amount * rate;
+      resultDisplay.textContent = `${amount} ${from} = ${converted.toFixed(4)} ${to}`;
+    }
+
+    // الحصول على سعر الصرف
+    function getRate(from, to) {
+      if (rates[from] && rates[from][to]) {
+        return rates[from][to];
+      } else if (rates[to] && rates[to][from]) {
+        return 1 / rates[to][from];
+      } else {
+        return null;
+      }
+    }
+
+    // تبديل العملات
+    function swap() {
+      const temp = fromSelect.value;
+      fromSelect.value = toSelect.value;
+      toSelect.value = temp;
+      convert();
+    }
+
+    // العملات الشائعة مع الحركة واللون الأزرق
+    function loadPopularCurrencies() {
+      const popular = ["USD", "EUR", "EGP", "SAR", "AED", "GBP"];
+      popularCurrenciesDiv.innerHTML = "";
+      popular.forEach(curr => {
+        const span = document.createElement("span");
+        span.textContent = curr;
+        span.title = "انقر للاختيار";
+        span.onclick = () => {
+          fromSelect.value = curr;
+          convert();
+        };
+        popularCurrenciesDiv.appendChild(span);
+      });
+    }
+
+    // تحميل البيانات عند بداية الصفحة
+    loadCurrencies();
+    loadPopularCurrencies();
+
+    // تحويل تلقائي عند تغيير القيم
+    amountInput.addEventListener("input", convert);
+    fromSelect.addEventListener("change", convert);
+    toSelect.addEventListener("change", convert);
+
+    // أول تحويل عند تحميل الصفحة
+    convert();
+
+    // وضع الليل والنهار (اختياري)
+    function toggleMode() {
+      if (document.body.style.backgroundColor === "var(--bg)" || document.body.style.backgroundColor === "") {
+        document.body.style.backgroundColor = "#fff";
+        document.body.style.color = "#000";
+      } else {
+        document.body.style.backgroundColor = "var(--bg)";
+        document.body.style.color = "var(--text)";
+      }
+    }
+  </script>
+</body>
+</html>
